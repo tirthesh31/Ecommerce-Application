@@ -1,33 +1,36 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import * as WebBrowser from "expo-web-browser";
 import { Colors } from '../constants/Colors';
-import { TouchableOpacity } from 'react-native';
 import { useWarmUpBrowser } from '../hooks/useWarmBrowser'; // Corrected import hook name
 import { useOAuth } from "@clerk/clerk-expo";
-import * as Linking from 'expo-linking'; 
+import * as Linking from 'expo-linking';
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen() {
-    useWarmUpBrowser();
+  useWarmUpBrowser();
 
-    const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
-  
-    const onPress = React.useCallback(async () => {
-      try {
-        const { createdSessionId, signIn, signUp, setActive } =
-          await startOAuthFlow({ redirectUrl: Linking.createURL("/dashboard", { scheme: "myapp" })});
-  
-        if (createdSessionId) {
-          setActive({ session: createdSessionId });
-        } else {
-          // Use signIn or signUp for next steps such as MFA
-        }
-      } catch (err) {
-        console.error("OAuth error", err);
+  const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+
+  const onPress = React.useCallback(async () => {
+    try {
+      const redirectUrl = Linking.createURL("/dashboard", { scheme: "myapp" });
+      console.log("Generated Redirect URL:", redirectUrl);
+
+      const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({ redirectUrl });
+      console.log("OAuth Flow Result:", { createdSessionId, signIn, signUp, setActive });
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        console.warn("No session ID created. Handle signIn or signUp for next steps.");
+        // Handle signIn or signUp actions accordingly
       }
-    }, []);
+    } catch (err) {
+      console.error("OAuth error", err);
+    }
+  }, [startOAuthFlow]);
 
   return (
     <View>
@@ -86,7 +89,7 @@ export default function LoginScreen() {
             fontFamily: 'Nunito-Italic-VariableFont_wght' // Corrected font family name
           }}>Let's get Started</Text>
         </TouchableOpacity>
-      </View>            
+      </View>
     </View>
   );
 }
