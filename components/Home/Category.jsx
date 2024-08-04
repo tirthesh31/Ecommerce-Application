@@ -19,7 +19,7 @@ export default function Category() {
 
             const categories = [];
             querySnapshot.forEach(doc => {
-                categories.push(doc.data());
+                categories.push({ id: doc.id, ...doc.data() }); // Include the document ID
             });
             setCategoryList(categories);
         } catch (error) {
@@ -54,12 +54,12 @@ export default function Category() {
                 style={{
                     marginLeft:20
                 }}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item) => item.id} // Use document ID for unique key
                 renderItem={({ item }) => (
                     <CategoryItem 
-                    category={item}
-                    key={index}
-                    onCategoryPress={(category) = console.log(categroy)} />
+                        category={item}
+                        onCategoryPress={(category) => console.log(category)} // Fixed typo
+                    />
                 )}
             />
         </View>

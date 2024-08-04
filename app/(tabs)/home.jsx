@@ -3,6 +3,7 @@ import React from 'react'
 import Header from '../../components/Home/Header'
 import Slider from '../../components/Home/Slider'
 import Cateory from '../../components/Home/Category'
+import PopularBusiness from '../../components/Home/PopularBusiness'
 
 export default function home() {
   return (
@@ -14,6 +15,7 @@ export default function home() {
       {/* Category */}
       <Cateory/>
       {/* Business List */}
+      <PopularBusiness/>
     </View>
   )
 }
