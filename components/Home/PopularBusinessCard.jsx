@@ -37,16 +37,18 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 100,
         borderRadius: 8,
+        marginBottom:5
     },
     infoContainer: {
         height: 90, // Fixed height for name and address
         justifyContent: 'center',
-        paddingVertical: 10,
+        paddingVertical: 5,
     },
     name: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 5,
+        justifyContent:'center'
     },
     address: {
         fontSize: 14,

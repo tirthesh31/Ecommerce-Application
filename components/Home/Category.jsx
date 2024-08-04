@@ -4,9 +4,11 @@ import { Colors } from '../../constants/Colors';
 import { collection, query, getDocs } from 'firebase/firestore';
 import CategoryItem from '../../components/Home/CategoryItem'; // Import the default export correctly
 import { db } from '../../configs/FirebaseConfig'; // Import db from your Firebase config
+import { useRouter } from 'expo-router';
 
 export default function Category() {
     const [categoryList, setCategoryList] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
         GetCategoryList();
@@ -24,6 +26,16 @@ export default function Category() {
             setCategoryList(categories);
         } catch (error) {
             console.error("Error fetching category list: ", error);
+        }
+    };
+
+    const handleCategoryPress = (categoryName) => {
+        const encodedCategoryName = encodeURIComponent(categoryName);
+        const route = `/businesslist/${categoryName}`;
+        try {
+            router.push(route)
+        } catch (error) {
+            console.error('Navigation error:', error);
         }
     };
 
@@ -58,7 +70,9 @@ export default function Category() {
                 renderItem={({ item }) => (
                     <CategoryItem 
                         category={item}
-                        onCategoryPress={(category) => console.log(category)} // Fixed typo
+                        onCategoryPress={() => {
+                            handleCategoryPress(item.name); // Call the handler
+                        }} 
                     />
                 )}
             />
