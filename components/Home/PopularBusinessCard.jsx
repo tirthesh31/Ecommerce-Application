@@ -1,10 +1,14 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { Colors } from '../../constants/Colors'; // Assuming you have defined Colors in your project
+import { useRouter } from 'expo-router';
 
 export default function PopularBusinessCard({ business }) {
+    const router = useRouter();
     return (
-        <View style={styles.cardContainer}>
+        <TouchableOpacity style={styles.cardContainer} onPress={() => {
+            router.push(`/businessdetail/${business.id}`);
+        }}>
             <Image source={{ uri: business.imageUrl }} style={styles.image} />
             <View style={styles.infoContainer}>
                 <Text style={styles.name}>{business.name}</Text>
@@ -15,7 +19,7 @@ export default function PopularBusinessCard({ business }) {
                 <Text style={styles.star}>⭐</Text>
                 <Text style={styles.category}>{business.category}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

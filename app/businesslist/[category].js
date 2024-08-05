@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native'
+import { View, Text, FlatList, StyleSheet,ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useLocalSearchParams, useNavigation } from 'expo-router'
 import { collection, getDocs, query, where } from 'firebase/firestore';
@@ -10,6 +10,7 @@ export default function BusinessListByCategory() {
   const navigation = useNavigation();
   const { category } = useLocalSearchParams();
   const [businessList, setBusinessList] = useState([]);
+  const [loading, setLoading] = useState(false); // State for loading indicator
 
   useEffect(() => {
     navigation.setOptions({
@@ -21,20 +22,26 @@ export default function BusinessListByCategory() {
 
   // Get the business list with respect to the category we got from the home screen
   const getBusinessList = async () => {
+    setLoading(true);
     const q = query(collection(db, 'BusinessList'), where("category", '==', category))
     const querySnapshot = await getDocs(q)
     
-    const businesses = [];
+    
     querySnapshot.forEach((doc) => {
-      businesses.push(doc.data());
+      setBusinessList(prev=>[...prev,{id:doc.id,...doc.data()}]);
     });
-    setBusinessList(businesses);
+    
+    setLoading(false)
   }
 
   return (
     <View style={styles.container}>
-      {businessList.length > 0 ? (
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
+      ) : businessList.length > 0 ? (
         <FlatList
+          onRefresh={getBusinessList}
+          refreshing={loading}
           data={businessList}
           renderItem={({ item }) => (
             <BusinessListCard

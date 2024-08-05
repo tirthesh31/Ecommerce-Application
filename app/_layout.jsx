@@ -8,7 +8,8 @@ import tokenCache from "../hooks/useTokenCache";
 
 export default function RootLayout() {
   useFonts({
-    'numito': require('./../assets/fonts/Nunito-Italic-VariableFont_wght.ttf')
+    'numito': require('./../assets/fonts/Nunito-Italic-VariableFont_wght.ttf'),
+    'roboto': require('./../assets/fonts/RobotoSlab-VariableFont_wght.ttf')
   })
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}>

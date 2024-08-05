@@ -17,8 +17,9 @@ export default function PopularBusiness() {
             const q = query(collection(db, 'BusinessList'), limit(10));
             const querySnapshot = await getDocs(q);
 
-            const businesses = querySnapshot.docs.map(doc => doc.data());
-            setBusinessList(businesses);
+            querySnapshot.forEach((doc) => {
+                setBusinessList(prev => [...prev,{id:doc.id,...doc.data()}]);
+            });
         } catch (error) {
             console.error("Error fetching business list: ", error);
         }

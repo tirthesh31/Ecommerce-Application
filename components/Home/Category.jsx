@@ -6,7 +6,7 @@ import CategoryItem from '../../components/Home/CategoryItem'; // Import the def
 import { db } from '../../configs/FirebaseConfig'; // Import db from your Firebase config
 import { useRouter } from 'expo-router';
 
-export default function Category() {
+export default function Category({explore=false,onCategorySelect}) {
     const [categoryList, setCategoryList] = useState([]);
     const router = useRouter();
 
@@ -33,7 +33,12 @@ export default function Category() {
         const encodedCategoryName = encodeURIComponent(categoryName);
         const route = `/businesslist/${categoryName}`;
         try {
-            router.push(route)
+            if(!explore){
+                router.push(route)
+            }else{
+                onCategorySelect(categoryName)   
+            }
+            
         } catch (error) {
             console.error('Navigation error:', error);
         }
@@ -41,7 +46,7 @@ export default function Category() {
 
     return (
         <View>
-            <View style={{
+            {!explore&&<View style={{
                 padding: 20,
                 display: "flex",
                 flexDirection: "row",
@@ -58,7 +63,7 @@ export default function Category() {
                     fontFamily: "Nunito-VariableFont_wght",
                     fontWeight: "bold"
                 }}>View all</Text>
-            </View>
+            </View>}
             <FlatList 
                 data={categoryList}
                 horizontal={true}
