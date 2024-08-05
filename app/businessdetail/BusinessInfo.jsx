@@ -1,9 +1,43 @@
-import { View, Text, Image, TouchableOpacity, Linking, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Linking, StyleSheet, Alert } from 'react-native';
 import React from 'react';
 import { Ionicons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Colors } from '../../constants/Colors';
+import { useUser } from '@clerk/clerk-expo';
+import { useNavigation } from '@react-navigation/native'; // Make sure to install @react-navigation/native if not already installed
+import { doc, deleteDoc } from 'firebase/firestore';
+import { db } from '../../configs/FirebaseConfig'; // Adjust path as needed
 
-export default function BusinessInfo({ imageUrl, name, contact, address, website, shareContent }) {
+export default function BusinessInfo({ imageUrl, name, contact, address, website, shareContent, userEmail, businessId }) {
+  const { user } = useUser();
+  const navigation = useNavigation();
+
+  const handleDelete = async () => {
+    try {
+      await deleteDoc(doc(db, 'BusinessList', businessId));
+      navigation.goBack(); // Navigate back to the previous screen
+    } catch (error) {
+      console.error('Error deleting business: ', error);
+    }
+  };
+
+  const confirmDelete = () => {
+    Alert.alert(
+      'Delete Business',
+      'Are you sure you want to delete this business?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: handleDelete,
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -11,7 +45,14 @@ export default function BusinessInfo({ imageUrl, name, contact, address, website
         style={styles.image}
       />
       <View style={styles.overlay}>
-        <Text style={styles.name}>{name}</Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.name}>{name}</Text>
+          {user.primaryEmailAddress.emailAddress === userEmail && (
+            <TouchableOpacity onPress={confirmDelete}>
+              <Ionicons name="trash" size={24} color="red" style={styles.deleteIcon} />
+            </TouchableOpacity>
+          )}
+        </View>
         <Text style={styles.address}>{address}</Text>
         <View style={styles.iconRow}>
           <View style={styles.iconColumn}>
@@ -72,14 +113,22 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    paddingBottom:0,
-    borderBottomWidth:0
+    paddingBottom: 0,
+    borderBottomWidth: 0,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   name: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 5,
     color: Colors.BLACK,
+  },
+  deleteIcon: {
+    marginLeft: 10,
   },
   address: {
     fontSize: 16,

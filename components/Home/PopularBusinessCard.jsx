@@ -6,9 +6,12 @@ import { useRouter } from 'expo-router';
 export default function PopularBusinessCard({ business }) {
     const router = useRouter();
     return (
-        <TouchableOpacity style={styles.cardContainer} onPress={() => {
-            router.push(`/businessdetail/${business.id}`);
-        }}>
+        <TouchableOpacity 
+            style={styles.cardContainer} 
+            onPress={() => {
+                router.push(`/businessdetail/${business.id}`);
+            }}
+        >
             <Image source={{ uri: business.imageUrl }} style={styles.image} />
             <View style={styles.infoContainer}>
                 <Text style={styles.name}>{business.name}</Text>
@@ -41,18 +44,16 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 100,
         borderRadius: 8,
-        marginBottom:5
+        marginBottom: 5,
     },
     infoContainer: {
-        height: 90, // Fixed height for name and address
+        height: 60, // Adjusted height for name and address
         justifyContent: 'center',
-        paddingVertical: 5,
     },
     name: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 5,
-        justifyContent:'center'
     },
     address: {
         fontSize: 14,

@@ -56,20 +56,20 @@ export default function LoginScreen() {
         borderTopColor: '#000',
       }}>
         <Text style={{
-          fontFamily: 'Nunito-Italic-VariableFont_wght', // Corrected font family name
+          fontFamily: 'numito', // Corrected font family name
           fontSize: 25,
           textAlign: 'center'
         }}>Youth Ultimate
           <Text style={{
             color: Colors.PRIMARY,
-            fontFamily: 'Nunito-Italic-VariableFont_wght', // Corrected font family name
+            fontFamily: 'numito', // Corrected font family name
             fontSize: 35,
             fontWeight: 'bold'
           }}>Community Business Directory</Text> App
         </Text>
         <Text style={{
           fontSize: 15,
-          fontFamily: 'Nunito-Italic-VariableFont_wght', // Corrected font family name
+          fontFamily: 'numito', // Corrected font family name
           textAlign: 'center',
           marginVertical: 15,
           color: Colors.GRAY
@@ -86,7 +86,7 @@ export default function LoginScreen() {
             fontSize: 20,
             textAlign: 'center',
             color: '#fff',
-            fontFamily: 'Nunito-Italic-VariableFont_wght' // Corrected font family name
+            fontFamily: 'numito' // Corrected font family name
           }}>Let's get Started</Text>
         </TouchableOpacity>
       </View>

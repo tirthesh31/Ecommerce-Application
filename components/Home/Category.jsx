@@ -55,12 +55,12 @@ export default function Category({explore=false,onCategorySelect}) {
             }}>
                 <Text style={{
                     fontSize: 20,
-                    fontFamily: "Nunito-VariableFont_wght",
+                    fontFamily: "numito",
                     fontWeight: "bold"
                 }}>Category</Text>
                 <Text style={{
                     color: Colors.PRIMARY,
-                    fontFamily: "Nunito-VariableFont_wght",
+                    fontFamily: "numito",
                     fontWeight: "bold"
                 }}>View all</Text>
             </View>}

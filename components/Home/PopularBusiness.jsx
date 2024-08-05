@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         fontSize: 20,
-        fontFamily: 'Nunito-VariableFont_wght',
+        fontFamily: 'numito',
         fontWeight: 'bold',
     },
     viewAll: {
         color: Colors.PRIMARY,
-        fontFamily: 'Nunito-VariableFont_wght',
+        fontFamily: 'numito',
         fontWeight: 'bold',
     },
 });

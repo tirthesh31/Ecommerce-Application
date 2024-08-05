@@ -28,7 +28,7 @@ export default function Slider() {
   return (
     <View>
       <Text style={{
-        fontFamily:"Nunito-VariableFont_wght",
+        fontFamily:"numito",
         fontSize:20,
         paddingLeft:20,
         paddingTop:20,

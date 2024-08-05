@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Share } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Share, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { collection, doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -6,14 +6,16 @@ import { db } from '../../configs/FirebaseConfig';
 import BusinessInfo from './BusinessInfo';
 import BusinessAbout from './BusinessAbout';
 import BusinessReviewsAndComments from './BusinessReviewsAndComments';
+import { useRouter } from 'expo-router'; // Import useRouter
 
 export default function BusinessDetail() {
   const { businessid } = useLocalSearchParams();
   const [business, setBusiness] = useState(null);
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState([]); // Initialize as an empty array
   const [newComment, setNewComment] = useState('');
   const [rating, setRating] = useState(0);
   const [hasReviewed, setHasReviewed] = useState(false);
+  const router = useRouter(); // Initialize router for navigation
 
   useEffect(() => {
     const fetchBusiness = async () => {
@@ -23,15 +25,16 @@ export default function BusinessDetail() {
         if (docSnap.exists()) {
           const data = docSnap.data();
           setBusiness(data);
-          setReviews(data.reviews || []);
-          const initialRating = data.reviews && data.reviews.length
-            ? data.reviews.reduce((acc, review) => acc + review.stars, 0) / data.reviews.length
+          const fetchedReviews = data.reviews || []; // Ensure reviews is an array
+          setReviews(fetchedReviews);
+          const initialRating = fetchedReviews.length
+            ? fetchedReviews.reduce((acc, review) => acc + review.stars, 0) / fetchedReviews.length
             : 0;
           setRating(initialRating);
 
           // Check if the user has already reviewed
           const currentUserId = 'currentUserId'; // Replace with actual user ID
-          const existingReview = data.reviews.find(review => review.userId === currentUserId);
+          const existingReview = fetchedReviews.find(review => review.userId === currentUserId);
           if (existingReview) {
             setHasReviewed(true);
           }
@@ -111,10 +114,12 @@ export default function BusinessDetail() {
         <BusinessInfo
           imageUrl={business.imageUrl}
           name={business.name}
+          userEmail={business.userEmail}
           contact={business.contact}
           address={business.address}
           website={business.website}
           shareContent={shareContent}
+          businessId={businessid}
         />
         <BusinessAbout description={business.about} />
         <BusinessReviewsAndComments
@@ -136,6 +141,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    marginTop:10
   },
   ratingContainer: {
     flexDirection: 'row',
@@ -144,5 +150,15 @@ const styles = StyleSheet.create({
   star: {
     fontSize: 30,
     marginRight: 5,
+  },
+  backButton: {
+    padding: 10,
+    backgroundColor: '#ddd',
+    borderRadius: 5,
+    margin: 10,
+  },
+  backButtonText: {
+    fontSize: 16,
+    textAlign: 'center',
   },
 });

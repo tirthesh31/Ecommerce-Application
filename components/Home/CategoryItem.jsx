@@ -25,7 +25,7 @@ export default function CategoryItem({ category, onCategoryPress }) {
         </View>
         <Text style={{ 
           textAlign: 'center', 
-          fontFamily: "Nunito-VariableFont_wght",
+          fontFamily: "numito",
           fontSize: 12,
         }}>
           {category.name}

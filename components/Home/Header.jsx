@@ -21,15 +21,6 @@ const Header = () => {
           <Text style={styles.userName}>{user?.fullName.toUpperCase()}</Text>
         </View>
       </View>
-
-      {/* Search Bar */}
-      <View style={styles.searchBarContainer}>
-        <Ionicons name="search" size={20} color="black" />
-        <TextInput
-          placeholder="Search"
-          style={styles.searchInput}
-        />
-      </View>
     </View>
   );
 }
@@ -38,7 +29,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     paddingHorizontal: 20,
     paddingTop: 50,
-    paddingBottom: 20,
+    
     backgroundColor: Colors.PRIMARY,
     borderBottomLeftRadius:30,
     borderBottomRightRadius:30
@@ -65,7 +56,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
-    fontFamily: 'Nunito-VariableFont_wght',
+    fontFamily: "numito",
   },
   searchBarContainer: {
     flexDirection: 'row',
